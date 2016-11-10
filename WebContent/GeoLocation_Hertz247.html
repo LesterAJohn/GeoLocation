@@ -10,6 +10,7 @@
 
 <script>
 window.addEventListener("pageshow", getLocation);
+window.addEventListener("load", getLocation);
 
 var x = document.getElementById("testnav");
 
@@ -25,9 +26,12 @@ function genGeoToken(position) {
 
     var geocoder = new google.maps.Geocoder
     var geoLatLng = new google.maps.LatLng({lat: position.coords.latitude, lng: position.coords.longitude});
-
-	document.cookie = "Incap-Geo-Lat =" + position.coords.latitude;
-    document.cookie = "Incap-Geo-Lng =" + position.coords.longitude;
+	
+	var geoLat = position.coords.latitude;
+	var geoLng = position.coords.longitude;
+	
+	document.cookie = "Incap-Geo-Lat =" + geoLat;
+    document.cookie = "Incap-Geo-Lng =" + geoLng;
 
     geocoder.geocode({'location': geoLatLng}, function(results, status) {
     	if (status == 'OK') {
@@ -42,9 +46,17 @@ function genGeoToken(position) {
     		document.cookie = "Incap-Geo-City =" + addrStrSplit[1];
     		document.cookie = "Incap-Geo-State =" + addrStrStZip[1];
     		document.cookie = "Incap-Geo-ZipCode =" + addrStrStZip[2];
+    		
+    		/** Hertz 247 Cookies **/
+    		
+    		var esLat = "lat=" + geoLat;
+    		var esLng = "long=" + geoLng;
+    		
+    		document.cookie = "X-Akamai-Edgescape = " + esLat + "," + esLng;
+    		
     	}
 
-    x.innerHTML = document.cookie;
+    /** x.innerHTML = document.cookie; **/
     })
 }
 
